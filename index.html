@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="テスト、旅行、行事などの予定までの残り時間を管理するカウントダウンツール" />
+  <title>カウントダウン管理</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="page-header">
+      <div>
+        <p class="badge">COUNTDOWN MANAGER</p>
+        <h1>カウントダウン管理</h1>
+        <p class="description">テスト、旅行、行事などまでの残り日数と時間を一覧で確認できます。</p>
+      </div>
+      <a class="home-link" href="https://kentaro0810.github.io/">リンク集へ戻る</a>
+    </header>
+
+    <section class="summary-grid" aria-label="予定のまとめ">
+      <article class="summary-card main-summary">
+        <p>次の予定まで</p>
+        <strong id="nearestCountdown">予定なし</strong>
+        <span id="nearestName">予定を追加しましょう</span>
+      </article>
+      <article class="summary-card">
+        <p>予定中</p>
+        <strong id="activeCount">0件</strong>
+        <span>これからの予定</span>
+      </article>
+      <article class="summary-card">
+        <p>終了済み</p>
+        <strong id="completedCount">0件</strong>
+        <span>過ぎた予定</span>
+      </article>
+    </section>
+
+    <section class="control-card">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">EVENTS</p>
+          <h2>予定一覧</h2>
+        </div>
+        <button id="openAddButton" class="primary-button" type="button">＋ 予定を追加</button>
+      </div>
+
+      <nav class="filter-row" aria-label="予定の表示切り替え">
+        <button class="filter-button active" type="button" data-filter="active" aria-pressed="true">予定中</button>
+        <button class="filter-button" type="button" data-filter="completed" aria-pressed="false">終了済み</button>
+        <button class="filter-button" type="button" data-filter="all" aria-pressed="false">すべて</button>
+      </nav>
+
+      <div id="eventList" class="event-list"></div>
+      <div id="emptyState" class="empty-state">
+        <span aria-hidden="true">📅</span>
+        <h3 id="emptyTitle">予定を追加しましょう</h3>
+        <p id="emptyText">テストや旅行など、楽しみな予定や大切な期限を登録できます。</p>
+      </div>
+    </section>
+
+    <section class="data-card">
+      <h2>データ管理</h2>
+      <p>予定はこの端末のブラウザー内に保存されます。JSONファイルでバックアップもできます。</p>
+      <div class="data-actions">
+        <button id="exportButton" class="secondary-button" type="button">バックアップを書き出す</button>
+        <label class="secondary-button file-label" for="importInput">バックアップを読み込む</label>
+        <input id="importInput" type="file" accept="application/json,.json" hidden />
+        <button id="deleteCompletedButton" class="danger-button" type="button">終了済みを一括削除</button>
+      </div>
+      <p id="statusMessage" class="status-message" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <dialog id="eventDialog" class="event-dialog">
+    <form id="eventForm" method="dialog">
+      <div class="dialog-heading">
+        <div>
+          <p class="section-kicker">EVENT SETTINGS</p>
+          <h2 id="dialogTitle">予定を追加</h2>
+        </div>
+        <button id="closeDialogButton" class="icon-button" type="button" aria-label="閉じる">×</button>
+      </div>
+
+      <input id="eventId" type="hidden" />
+
+      <label for="eventName">予定名</label>
+      <input id="eventName" type="text" maxlength="40" placeholder="例：期末テスト" required />
+
+      <div class="form-grid">
+        <div>
+          <label for="eventDate">日付</label>
+          <input id="eventDate" type="date" required />
+        </div>
+        <div>
+          <label for="eventTime">時刻</label>
+          <input id="eventTime" type="time" value="09:00" required />
+        </div>
+      </div>
+
+      <label for="eventMemo">メモ（任意）</label>
+      <textarea id="eventMemo" maxlength="120" placeholder="会場、持ち物、目標など"></textarea>
+
+      <fieldset>
+        <legend>テーマカラー</legend>
+        <div class="color-options">
+          <label><input type="radio" name="eventColor" value="#2563eb" checked /><span style="--swatch:#2563eb"></span>青</label>
+          <label><input type="radio" name="eventColor" value="#16a34a" /><span style="--swatch:#16a34a"></span>緑</label>
+          <label><input type="radio" name="eventColor" value="#7c3aed" /><span style="--swatch:#7c3aed"></span>紫</label>
+          <label><input type="radio" name="eventColor" value="#ea580c" /><span style="--swatch:#ea580c"></span>橙</label>
+          <label><input type="radio" name="eventColor" value="#db2777" /><span style="--swatch:#db2777"></span>桃</label>
+        </div>
+      </fieldset>
+
+      <div class="dialog-actions">
+        <button id="cancelButton" class="secondary-button" type="button">キャンセル</button>
+        <button class="primary-button" type="submit">保存する</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
